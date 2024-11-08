@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "576148648141",
+    "firebase_url": "https://adzandy-project-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "adzandy-project",
+    "storage_bucket": "adzandy-project.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:576148648141:android:8466fb3a91530e8e4db984",
+        "android_client_info": {
+          "package_name": "com.example.aplikasipengaduansamsatkarlos"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDkxwS11NrOkkXDLd4zj8fMUdrGcXOcojo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
