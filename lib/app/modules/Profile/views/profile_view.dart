@@ -1,8 +1,8 @@
-import 'package:aplikasipengaduansamsatkarlos/app/modules/Login_Register/controllers/auth_controller.dart';
-import 'package:aplikasipengaduansamsatkarlos/app/modules/Profile/controllers/profile_controller.dart';
-import 'package:aplikasipengaduansamsatkarlos/app/modules/Profile/views/profile_setting_view.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:aplikasipengaduansamsatkarlos/app/modules/Profile/controllers/profile_controller.dart';
+import 'package:aplikasipengaduansamsatkarlos/app/modules/Login_Register/controllers/auth_controller.dart';
+import 'package:aplikasipengaduansamsatkarlos/app/modules/Profile/views/profile_setting_view.dart';
 
 class ProfileView extends StatelessWidget {
   final ProfileController profileController = Get.put(ProfileController());
@@ -43,15 +43,29 @@ class ProfileView extends StatelessWidget {
                   }),
                   SizedBox(height: 15),
                   Obx(() {
-                    return Text(
-                      profileController.username.value.isNotEmpty
-                          ? profileController.username.value
-                          : 'User Name',
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.grey[800],
-                      ),
+                    return Column(
+                      children: [
+                        Text(
+                          profileController.username.value.isNotEmpty
+                              ? profileController.username.value
+                              : 'User Name',
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.grey[800],
+                          ),
+                        ),
+                        SizedBox(height: 5), // Jarak antara nama dan email
+                        Text(
+                          profileController.email.value.isNotEmpty
+                              ? profileController.email.value
+                              : 'No Email',
+                          style: TextStyle(
+                            fontSize: 16,
+                            color: Colors.grey[600],
+                          ),
+                        ),
+                      ],
                     );
                   }),
                 ],

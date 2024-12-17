@@ -172,7 +172,6 @@ class RiwayatPengaduanView extends GetView<RiwayatPengaduanController> {
               child: CustomScrollView(
                 controller: scrollController,
                 slivers: [
-                  // Handle untuk drag
                   SliverToBoxAdapter(
                     child: Center(
                       child: Container(
@@ -186,13 +185,10 @@ class RiwayatPengaduanView extends GetView<RiwayatPengaduanController> {
                       ),
                     ),
                   ),
-
-                  // Konten Detail Pengaduan
                   SliverPadding(
                     padding: EdgeInsets.all(16),
                     sliver: SliverList(
                       delegate: SliverChildListDelegate([
-                        // Judul
                         Text(
                           'Detail Pengaduan',
                           style: TextStyle(
@@ -202,24 +198,14 @@ class RiwayatPengaduanView extends GetView<RiwayatPengaduanController> {
                           ),
                         ),
                         SizedBox(height: 16),
-
-                        // Header Informasi
                         _buildInfoHeader(pengaduan),
                         SizedBox(height: 16),
-
-                        // Kontak
                         _buildContactInfo(pengaduan),
                         SizedBox(height: 16),
-
-                        // Alamat
                         _buildAddressSection(pengaduan),
                         SizedBox(height: 16),
-
-                        // Isi Pengaduan
                         _buildPengaduanContent(pengaduan),
                         SizedBox(height: 16),
-
-                        // Bukti Gambar
                         if (pengaduan['buktiGambar'] != null)
                           _buildImageSection(pengaduan),
                       ]),
@@ -355,7 +341,7 @@ class RiwayatPengaduanView extends GetView<RiwayatPengaduanController> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Bukti Pengaduan',
+          'Bukti Gambar',
           style: TextStyle(
             fontSize: 18,
             fontWeight: FontWeight.bold,
@@ -363,17 +349,24 @@ class RiwayatPengaduanView extends GetView<RiwayatPengaduanController> {
         ),
         SizedBox(height: 8),
         GestureDetector(
-          onTap: () => _showFullImage(pengaduan['buktiGambar']),
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(10),
-            child: CachedNetworkImage(
-              imageUrl: pengaduan['buktiGambar'],
-              height: 250, // Tinggi gambar lebih besar
-              width: double.infinity,
-              fit: BoxFit.cover,
-              placeholder: (context, url) => 
-                  Center(child: CircularProgressIndicator()),
-              errorWidget: (context, url, error) => Icon(Icons.error),
+          onTap: () => _showFullScreenImage(pengaduan['buktiGambar']),
+          child: CachedNetworkImage(
+            imageUrl: pengaduan['buktiGambar'],
+            placeholder: (context, url) =>
+                CircularProgressIndicator(color: primaryColor),
+            errorWidget: (context, url, error) => Icon(Icons.error),
+            height: 200,
+            width: double.infinity,
+            fit: BoxFit.cover,
+            imageBuilder: (context, imageProvider) => Container(
+              height: 200,
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: imageProvider,
+                  fit: BoxFit.cover,
+                ),
+                borderRadius: BorderRadius.circular(10),
+              ),
             ),
           ),
         ),
@@ -381,15 +374,20 @@ class RiwayatPengaduanView extends GetView<RiwayatPengaduanController> {
     );
   }
 
-  void _showFullImage(String imageUrl) {
+  void _showFullScreenImage(String imageUrl) {
     Get.dialog(
-      Dialog(
-        child: CachedNetworkImage(
-          imageUrl: imageUrl,
-          fit: BoxFit.contain,
-          placeholder: (context, url) => 
-              Center(child: CircularProgressIndicator()),
-          errorWidget: (context, url, error) => Icon(Icons.error),
+      GestureDetector(
+        onTap: () => Get.back(),
+        child: Center(
+          child: Hero(
+            tag: imageUrl,
+            child: CachedNetworkImage(
+              imageUrl: imageUrl,
+              placeholder: (context, url) =>
+                  CircularProgressIndicator(color: primaryColor),
+              errorWidget: (context, url, error) => Icon(Icons.error),
+            ),
+          ),
         ),
       ),
     );

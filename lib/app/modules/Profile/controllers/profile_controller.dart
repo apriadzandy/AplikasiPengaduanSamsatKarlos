@@ -4,14 +4,14 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:get/get.dart';
 
-
 class ProfileController extends GetxController {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-  final FirebaseStorage _storage = FirebaseStorage.instance; // Inisialisasi Firebase Storage
+  final FirebaseStorage _storage = FirebaseStorage.instance;
 
   RxString username = ''.obs;
   RxString profileImageUrl = ''.obs;
+  RxString email = ''.obs; // Tambahkan properti email
 
   @override
   void onInit() {
@@ -26,6 +26,7 @@ class ProfileController extends GetxController {
       if (userDoc.exists) {
         username.value = userDoc['username'] ?? 'User Name';
         profileImageUrl.value = userDoc['profileImageUrl'] ?? '';
+        email.value = user.email ?? 'No Email'; // Muat email pengguna
       }
     }
   }
@@ -36,7 +37,7 @@ class ProfileController extends GetxController {
       await _firestore.collection('users').doc(user.uid).update({
         'username': newUsername,
       });
-      username.value = newUsername; // Update state username
+      username.value = newUsername;
       Get.snackbar('Success', 'Username updated successfully');
     }
   }
@@ -44,19 +45,16 @@ class ProfileController extends GetxController {
   Future<void> updateProfileImage(File imageFile) async {
     User? user = _auth.currentUser;
     if (user != null) {
-      // Upload gambar ke Firebase Storage
       try {
         String filePath = 'profile_images/${user.uid}.png';
         await _storage.ref(filePath).putFile(imageFile);
 
-        // Ambil URL gambar yang baru di-upload
         String downloadUrl = await _storage.ref(filePath).getDownloadURL();
 
-        // Update URL gambar profil di Firestore
         await _firestore.collection('users').doc(user.uid).update({
           'profileImageUrl': downloadUrl,
         });
-        profileImageUrl.value = downloadUrl; // Update state image URL
+        profileImageUrl.value = downloadUrl;
 
         Get.snackbar('Success', 'Profile image updated successfully');
       } catch (e) {
@@ -69,15 +67,13 @@ class ProfileController extends GetxController {
     User? user = _auth.currentUser;
     if (user != null) {
       try {
-        // Hapus gambar dari Firebase Storage
         String filePath = 'profile_images/${user.uid}.png';
         await _storage.ref(filePath).delete();
 
-        // Hapus URL gambar profil di Firestore
         await _firestore.collection('users').doc(user.uid).update({
-          'profileImageUrl': '', // Set ke kosong
+          'profileImageUrl': '',
         });
-        profileImageUrl.value = ''; // Update state image URL
+        profileImageUrl.value = '';
 
         Get.snackbar('Success', 'Profile image deleted successfully');
       } catch (e) {

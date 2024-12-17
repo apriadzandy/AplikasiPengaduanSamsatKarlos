@@ -1,5 +1,6 @@
 // riwayat_pengaduan_controller.dart
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class RiwayatPengaduanController extends GetxController {
@@ -29,4 +30,30 @@ class RiwayatPengaduanController extends GetxController {
     return '${dateTime.day}/${dateTime.month}/${dateTime.year} '
            'pukul ${dateTime.hour}:${dateTime.minute.toString().padLeft(2, '0')} WIB';
   }
+
+  void _deletePengaduan(String pengaduanId) async {
+  try {
+    // Menghapus data pengaduan dari Firestore berdasarkan ID
+    await FirebaseFirestore.instance.collection('pengaduan').doc(pengaduanId).delete();
+
+    // Menampilkan notifikasi berhasil menghapus data
+    Get.snackbar(
+      'Sukses',
+      'Pengaduan berhasil dihapus',
+      snackPosition: SnackPosition.BOTTOM,
+      backgroundColor: Colors.green,
+      colorText: Colors.white,
+    );
+  } catch (e) {
+    // Menampilkan notifikasi gagal menghapus data
+    Get.snackbar(
+      'Gagal',
+      'Gagal menghapus pengaduan: $e',
+      snackPosition: SnackPosition.BOTTOM,
+      backgroundColor: Colors.red,
+      colorText: Colors.white,
+    );
+  }
+}
+
 }

@@ -22,14 +22,29 @@ class HomePage extends StatelessWidget {
           ),
           child: Column(
             children: [
-              SizedBox(height: 50),
-              // Logo
+              // Logo Baru di Kiri Atas
+              Padding(
+                padding: const EdgeInsets.all(8.0), // Jarak dari tepi kiri dan atas
+                child: Align(
+                  alignment: Alignment.topLeft, // Menyelaraskan ke kiri atas
+                  child: Container(
+                    width: 90, // Sesuaikan ukuran logo
+                    height: 60,
+                    child: Image.asset(
+                      'assets/images/logo/logo.png', // Path logo baru Anda
+                      fit: BoxFit.contain,
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(height: 30),
+              // Logo Tengah yang Sudah Ada
               Center(
                 child: Container(
                   width: 150,
                   height: 150,
                   child: Image.asset(
-                    'assets/images/logo/logoSAMSAT.png', // Sesuaikan dengan path logo Anda
+                    'assets/images/logo/logoSAMSAT.png', // Path logo utama
                     fit: BoxFit.contain,
                   ),
                 ),
@@ -45,7 +60,6 @@ class HomePage extends StatelessWidget {
                       icon: Icons.assignment_outlined,
                       label: 'Survey',
                       onTap: () {
-                        // Navigasi ke halaman Survey
                         Get.to(SurveyPage());
                       },
                     ),
@@ -53,7 +67,6 @@ class HomePage extends StatelessWidget {
                       icon: Icons.help_outline,
                       label: 'Pertanyaan',
                       onTap: () {
-                        // Navigasi ke halaman Pertanyaan
                         Get.to(ContactInfoPage());
                       },
                     ),
@@ -101,7 +114,7 @@ class HomePage extends StatelessWidget {
                 size: 40,
                 color: _primaryColor,
               ),
-              SizedBox(height: 8), // Space between icon and label
+              SizedBox(height: 8),
               Text(
                 label,
                 style: GoogleFonts.roboto(
