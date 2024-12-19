@@ -31,7 +31,7 @@ class ContactInfoPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text('Pertanyaan Lebih Lanjut'),
-        backgroundColor: const Color.fromARGB(255, 73, 124, 171),
+        backgroundColor:Color.fromARGB(226, 0, 77, 153),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),

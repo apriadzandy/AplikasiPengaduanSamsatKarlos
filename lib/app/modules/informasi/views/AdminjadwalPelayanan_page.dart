@@ -4,7 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:aplikasipengaduansamsatkarlos/app/modules/informasi/controller/jadwalPelayanan_controller.dart';
 
 class AdminJadwalPelayananPage extends StatelessWidget {
-  final Color _primaryColor = Color.fromARGB(255, 73, 124, 171);
+  final Color _primaryColor = Color.fromARGB(226, 0, 77, 153);
 
   @override
   Widget build(BuildContext context) {
@@ -46,10 +46,11 @@ class AdminJadwalPelayananPage extends StatelessWidget {
                   },
                   child: Text('Update Jadwal'),
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: _primaryColor,
+                    
                     padding: EdgeInsets.symmetric(horizontal: 20, vertical: 12),
                     textStyle: GoogleFonts.roboto(
                       fontSize: 16,
+                      color: const Color.fromARGB(255, 0, 0, 0),
                       fontWeight: FontWeight.bold,
                     ),
                   ),

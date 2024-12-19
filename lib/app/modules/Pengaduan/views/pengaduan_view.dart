@@ -4,7 +4,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:aplikasipengaduansamsatkarlos/app/modules/Pengaduan/controllers/pengaduan_controller.dart';
 
 class PengaduanView extends GetView<PengaduanController> {
-  final Color primaryColor = Color.fromARGB(255, 73, 124, 171);
+  final Color primaryColor = Color.fromARGB(226, 0, 77, 153);
 
   @override
   Widget build(BuildContext context) {

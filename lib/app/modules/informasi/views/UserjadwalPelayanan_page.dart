@@ -4,7 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:aplikasipengaduansamsatkarlos/app/modules/informasi/controller/jadwalPelayanan_controller.dart';
 
 class UserJadwalPelayananPage extends StatelessWidget {
-  final Color _primaryColor = Color.fromARGB(255, 73, 124, 171);
+  final Color _primaryColor = Color.fromARGB(226, 0, 77, 153);
 
   @override
   Widget build(BuildContext context) {

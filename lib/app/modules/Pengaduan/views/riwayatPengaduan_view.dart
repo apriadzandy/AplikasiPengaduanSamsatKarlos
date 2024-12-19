@@ -5,7 +5,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:aplikasipengaduansamsatkarlos/app/modules/Pengaduan/controllers/riwayat_pengaduan_controller.dart';
 
 class RiwayatPengaduanView extends GetView<RiwayatPengaduanController> {
-  final Color primaryColor = Color.fromARGB(255, 73, 124, 171);
+  final Color primaryColor = Color.fromARGB(226, 0, 77, 153);
 
   @override
   Widget build(BuildContext context) {

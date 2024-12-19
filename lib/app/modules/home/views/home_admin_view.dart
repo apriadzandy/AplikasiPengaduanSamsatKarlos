@@ -1,3 +1,4 @@
+
 import 'package:aplikasipengaduansamsatkarlos/app/modules/Pengaduan/views/riwayatPengaduan_view.dart';
 import 'package:aplikasipengaduansamsatkarlos/app/modules/survey/views/survey_result_page.dart';
 import 'package:flutter/material.dart';
@@ -5,7 +6,8 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class HomeAdminView extends StatelessWidget {
-  final Color _primaryColor = Color.fromARGB(255, 73, 124, 171);
+  final Color _primaryColor = Color(0xFF004D99); // Biru khas Samsat
+  final Color _accentColor = Color.fromARGB(255, 28, 98, 189); // Kuning sebagai aksen
 
   @override
   Widget build(BuildContext context) {
@@ -14,26 +16,49 @@ class HomeAdminView extends StatelessWidget {
         child: Container(
           decoration: BoxDecoration(
             gradient: LinearGradient(
-              colors: [_primaryColor.withOpacity(0.8), Colors.white],
+              colors: [_primaryColor.withOpacity(0.9), Colors.white],
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
             ),
           ),
           child: Column(
             children: [
-              SizedBox(height: 50),
-              // Logo
+              // Logo Samsat dan Header
+              Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Row(
+                  children: [
+                    Image.asset(
+                      'assets/images/logo/logo.png', // Path logo baru
+                      width: 60,
+                      height: 60,
+                      fit: BoxFit.contain,
+                    ),
+                    SizedBox(width: 10),
+                    Text(
+                      'Pengaduan Samsat',
+                      style: GoogleFonts.averiaLibre(
+                        fontSize: 23,
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(height: 20),
+              // Logo Utama
               Center(
                 child: Container(
-                  width: 150,
-                  height: 150,
+                  width: 120,
+                  height: 120,
                   child: Image.asset(
-                    'assets/images/logo/logoSAMSAT.png', // Sesuaikan dengan path logo Anda
+                    'assets/images/logo/logoSAMSAT.png',
                     fit: BoxFit.contain,
                   ),
                 ),
               ),
-              SizedBox(height: 50),
+              SizedBox(height: 40),
               // Menu Buttons
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 20),
@@ -44,11 +69,10 @@ class HomeAdminView extends StatelessWidget {
                       icon: Icons.assignment_outlined,
                       label: 'Survey',
                       onTap: () {
-                        // Navigasi ke halaman Survey
                         Get.to(SurveyResultPage());
                       },
                     ),
-                    
+      
                     _buildMenuButton(
                       icon: Icons.chat_bubble_outline,
                       label: 'Pengaduan',
@@ -57,6 +81,16 @@ class HomeAdminView extends StatelessWidget {
                       },
                     ),
                   ],
+                ),
+              ),
+              SizedBox(height: 20),
+              // Footer
+              Text(
+                'Layanan Pengaduan Resmi Samsat Karang ploso',
+                style: GoogleFonts.roboto(
+                  fontSize: 16,
+                  color: Colors.grey[800],
+                  fontStyle: FontStyle.italic,
                 ),
               ),
             ],
@@ -74,16 +108,17 @@ class HomeAdminView extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Card(
-        elevation: 5,
+        elevation: 6,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20),
+          borderRadius: BorderRadius.circular(15),
         ),
         child: Container(
           width: 100,
           height: 100,
           decoration: BoxDecoration(
             color: Colors.white,
-            borderRadius: BorderRadius.circular(20),
+            borderRadius: BorderRadius.circular(15),
+            border: Border.all(color: _accentColor, width: 1.5),
           ),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -93,11 +128,11 @@ class HomeAdminView extends StatelessWidget {
                 size: 40,
                 color: _primaryColor,
               ),
-              SizedBox(height: 8), // Space between icon and label
+              SizedBox(height: 8),
               Text(
                 label,
                 style: GoogleFonts.roboto(
-                  fontSize: 16,
+                  fontSize: 14,
                   color: _primaryColor,
                   fontWeight: FontWeight.w600,
                 ),
