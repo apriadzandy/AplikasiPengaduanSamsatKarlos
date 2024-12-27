@@ -56,4 +56,15 @@ class RiwayatPengaduanController extends GetxController {
   }
 }
 
+Future<void> hapusPengaduan(String pengaduanId) async {
+    try {
+      await _firestore.collection('pengaduan').doc(pengaduanId).delete();
+      Get.snackbar('Pengaduan Dihapus', 'Pengaduan telah berhasil dihapus.',
+          backgroundColor: Colors.green, colorText: Colors.white);
+    } catch (e) {
+      Get.snackbar('Gagal Menghapus', 'Terjadi kesalahan saat menghapus pengaduan.',
+          backgroundColor: Colors.red, colorText: Colors.white);
+    }
+  }
+
 }

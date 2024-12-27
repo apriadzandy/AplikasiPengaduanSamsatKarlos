@@ -5,7 +5,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:aplikasipengaduansamsatkarlos/app/modules/Pengaduan/controllers/riwayat_pengaduan_controller.dart';
 
 class RiwayatPengaduanView extends GetView<RiwayatPengaduanController> {
-  final Color primaryColor = Color.fromARGB(226, 0, 77, 153);
+  final Color primaryColor = Color(0xFF004D99); // Adjusted color tone for a more modern look
 
   @override
   Widget build(BuildContext context) {
@@ -16,6 +16,7 @@ class RiwayatPengaduanView extends GetView<RiwayatPengaduanController> {
           style: TextStyle(
             fontWeight: FontWeight.bold,
             color: Colors.white,
+            fontSize: 20,
           ),
         ),
         centerTitle: true,
@@ -84,12 +85,12 @@ class RiwayatPengaduanView extends GetView<RiwayatPengaduanController> {
 
   Widget _buildPengaduanItem(QueryDocumentSnapshot pengaduan) {
     return Container(
-      margin: EdgeInsets.symmetric(vertical: 8),
+      margin: EdgeInsets.symmetric(vertical: 10),
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(15),
+        borderRadius: BorderRadius.circular(12),
         boxShadow: [
           BoxShadow(
-            color: primaryColor.withOpacity(0.2),
+            color: primaryColor.withOpacity(0.15),
             blurRadius: 10,
             offset: Offset(0, 5),
           ),
@@ -98,10 +99,10 @@ class RiwayatPengaduanView extends GetView<RiwayatPengaduanController> {
       child: Card(
         elevation: 0,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(15),
+          borderRadius: BorderRadius.circular(12),
         ),
         child: ListTile(
-          contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+          contentPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 12),
           title: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -138,7 +139,36 @@ class RiwayatPengaduanView extends GetView<RiwayatPengaduanController> {
             color: primaryColor,
           ),
           onTap: () => _showPengaduanDetail(pengaduan),
+          // Add delete button
+          leading: IconButton(
+            icon: Icon(Icons.delete, color: Colors.red),
+            onPressed: () => _deletePengaduan(pengaduan.id),
+          ),
         ),
+      ),
+    );
+  }
+
+  void _deletePengaduan(String pengaduanId) {
+    Get.dialog(
+      AlertDialog(
+        title: Text('Hapus Pengaduan'),
+        content: Text('Apakah Anda yakin ingin menghapus pengaduan ini?'),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Get.back();
+            },
+            child: Text('Batal'),
+          ),
+          TextButton(
+            onPressed: () async {
+              Get.back();
+              await controller.hapusPengaduan(pengaduanId);
+            },
+            child: Text('Hapus'),
+          ),
+        ],
       ),
     );
   }
@@ -166,7 +196,7 @@ class RiwayatPengaduanView extends GetView<RiwayatPengaduanController> {
                     blurRadius: 20,
                     spreadRadius: 5,
                     offset: Offset(0, -5),
-                  )
+                  ),
                 ],
               ),
               child: CustomScrollView(
@@ -188,7 +218,7 @@ class RiwayatPengaduanView extends GetView<RiwayatPengaduanController> {
                   SliverPadding(
                     padding: EdgeInsets.all(16),
                     sliver: SliverList(
-                      delegate: SliverChildListDelegate([
+                      delegate: SliverChildListDelegate([  
                         Text(
                           'Detail Pengaduan',
                           style: TextStyle(
@@ -294,15 +324,9 @@ class RiwayatPengaduanView extends GetView<RiwayatPengaduanController> {
           ),
         ),
         SizedBox(height: 8),
-        Container(
-          padding: EdgeInsets.all(12),
-          decoration: BoxDecoration(
-            color: Colors.grey[100],
-            borderRadius: BorderRadius.circular(10),
-          ),
-          child: Text(
-            pengaduan['alamat'], style: TextStyle(fontSize: 14),
-          ),
+        Text(
+          pengaduan['alamat'],
+          style: TextStyle(fontSize: 14),
         ),
       ],
     );
@@ -320,17 +344,9 @@ class RiwayatPengaduanView extends GetView<RiwayatPengaduanController> {
           ),
         ),
         SizedBox(height: 8),
-        Container(
-          width: double.infinity,
-          padding: EdgeInsets.all(12),
-          decoration: BoxDecoration(
-            color: Colors.grey[100],
-            borderRadius: BorderRadius.circular(10),
-          ),
-          child: Text(
-            pengaduan['isiPengaduan'],
-            style: TextStyle(fontSize: 14),
-          ),
+        Text(
+          pengaduan['isiPengaduan'],
+          style: TextStyle(fontSize: 14),
         ),
       ],
     );
@@ -348,48 +364,15 @@ class RiwayatPengaduanView extends GetView<RiwayatPengaduanController> {
           ),
         ),
         SizedBox(height: 8),
-        GestureDetector(
-          onTap: () => _showFullScreenImage(pengaduan['buktiGambar']),
-          child: CachedNetworkImage(
-            imageUrl: pengaduan['buktiGambar'],
-            placeholder: (context, url) =>
-                CircularProgressIndicator(color: primaryColor),
-            errorWidget: (context, url, error) => Icon(Icons.error),
-            height: 200,
-            width: double.infinity,
-            fit: BoxFit.cover,
-            imageBuilder: (context, imageProvider) => Container(
-              height: 200,
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                  image: imageProvider,
-                  fit: BoxFit.cover,
-                ),
-                borderRadius: BorderRadius.circular(10),
-              ),
-            ),
+        CachedNetworkImage(
+          imageUrl: pengaduan['buktiGambar'],
+          placeholder: (context, url) => CircularProgressIndicator(
+            color: primaryColor,
           ),
+          errorWidget: (context, url, error) => Icon(Icons.error),
+          fit: BoxFit.cover,
         ),
       ],
-    );
-  }
-
-  void _showFullScreenImage(String imageUrl) {
-    Get.dialog(
-      GestureDetector(
-        onTap: () => Get.back(),
-        child: Center(
-          child: Hero(
-            tag: imageUrl,
-            child: CachedNetworkImage(
-              imageUrl: imageUrl,
-              placeholder: (context, url) =>
-                  CircularProgressIndicator(color: primaryColor),
-              errorWidget: (context, url, error) => Icon(Icons.error),
-            ),
-          ),
-        ),
-      ),
     );
   }
 }

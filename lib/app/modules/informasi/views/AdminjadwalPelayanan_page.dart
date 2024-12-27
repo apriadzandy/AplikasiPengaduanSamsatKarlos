@@ -46,13 +46,8 @@ class AdminJadwalPelayananPage extends StatelessWidget {
                   },
                   child: Text('Update Jadwal'),
                   style: ElevatedButton.styleFrom(
-                    
-                    padding: EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-                    textStyle: GoogleFonts.roboto(
-                      fontSize: 16,
-                      color: const Color.fromARGB(255, 0, 0, 0),
-                      fontWeight: FontWeight.bold,
-                    ),
+                  backgroundColor: _primaryColor,
+                  foregroundColor: Colors.black,
                   ),
                 ),
               ],
@@ -142,6 +137,7 @@ class AdminJadwalPelayananPage extends StatelessWidget {
               child: Text('Update'),
               style: ElevatedButton.styleFrom(
                 backgroundColor: _primaryColor,
+                foregroundColor: Colors.black,
               ),
             ),
             ElevatedButton(
@@ -149,6 +145,10 @@ class AdminJadwalPelayananPage extends StatelessWidget {
                 Navigator.pop(context);
               },
               child: Text('Batal'),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: _primaryColor,
+                foregroundColor: Colors.black,
+            ),
             ),
           ],
         );

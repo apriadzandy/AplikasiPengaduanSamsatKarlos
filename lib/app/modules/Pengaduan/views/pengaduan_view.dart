@@ -224,6 +224,7 @@ class PengaduanView extends GetView<PengaduanController> {
         style: TextStyle(
           fontSize: 16,
           fontWeight: FontWeight.bold,
+          color: Colors.white,
         ),
       ),
     );

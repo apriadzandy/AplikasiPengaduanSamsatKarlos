@@ -1,7 +1,6 @@
-// survey_page.dart
-import 'package:aplikasipengaduansamsatkarlos/app/modules/survey/controllers/survey_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:aplikasipengaduansamsatkarlos/app/modules/survey/controllers/survey_controller.dart';
 
 class SurveyPage extends StatelessWidget {
   final SurveyController controller = Get.put(SurveyController());
@@ -9,18 +8,18 @@ class SurveyPage extends StatelessWidget {
   Widget _buildRatingOption(int value, RxInt rating) {
     return Obx(() => GestureDetector(
           onTap: () => rating.value = value,
-          child: Container(
-            width: 40,
-            height: 40,
-            margin: EdgeInsets.symmetric(horizontal: 4),
+          child: AnimatedContainer(
+            duration: Duration(milliseconds: 200),
+            width: 50,
+            height: 50,
+            margin: EdgeInsets.symmetric(horizontal: 8),
             decoration: BoxDecoration(
-              color: rating.value == value
-                  ? Colors.blue
-                  : Colors.blue.withOpacity(0.2),
+              color: rating.value == value ? Colors.blueAccent : Colors.blue.withOpacity(0.2),
               shape: BoxShape.circle,
-              border: rating.value == 0
-                  ? Border.all(color: Colors.grey.shade400)
-                  : null,
+              boxShadow: [
+                if (rating.value == value) 
+                  BoxShadow(color: Colors.blueAccent.withOpacity(0.5), blurRadius: 6, spreadRadius: 1)
+              ],
             ),
             child: Center(
               child: Text(
@@ -28,6 +27,7 @@ class SurveyPage extends StatelessWidget {
                 style: TextStyle(
                   color: rating.value == value ? Colors.white : Colors.black,
                   fontWeight: FontWeight.bold,
+                  fontSize: 18,
                 ),
               ),
             ),
@@ -40,10 +40,10 @@ class SurveyPage extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
-          padding: EdgeInsets.symmetric(vertical: 8),
+          padding: EdgeInsets.symmetric(vertical: 12),
           child: Text(
             question,
-            style: TextStyle(fontSize: 16),
+            style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500, color: Colors.black87),
           ),
         ),
         Row(
@@ -55,7 +55,7 @@ class SurveyPage extends StatelessWidget {
         ),
         Obx(() => rating.value == 0
             ? Padding(
-                padding: EdgeInsets.only(top: 4),
+                padding: EdgeInsets.only(top: 6),
                 child: Text(
                   'Silakan pilih nilai 1-5',
                   style: TextStyle(
@@ -75,10 +75,11 @@ class SurveyPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text('Survey Layanan KB. Samsat Karangploso'),
-        backgroundColor: Colors.blue,
+        backgroundColor: Colors.blueAccent,
+        elevation: 0,
       ),
       body: SingleChildScrollView(
-        padding: EdgeInsets.all(16),
+        padding: EdgeInsets.all(20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -102,31 +103,36 @@ class SurveyPage extends StatelessWidget {
               'Seberapa puas Anda secara keseluruhan dengan layanan kami?',
               controller.kepuasanTotal,
             ),
-            SizedBox(height: 16),
+            SizedBox(height: 20),
             // Menambahkan input untuk saran
-            Text('Saran (Opsional)', style: TextStyle(fontSize: 16)),
+            Text('Saran (Opsional)', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600)),
             SizedBox(height: 8),
             TextField(
               onChanged: (value) => controller.saran.value = value,
               decoration: InputDecoration(
+                filled: true,
+                fillColor: Colors.grey.shade100,
                 border: OutlineInputBorder(),
                 hintText: 'Masukkan saran atau komentar Anda...',
+                contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 12),
               ),
-              ),
+              maxLines: 3,
+            ),
             SizedBox(height: 20),
             Center(
               child: ElevatedButton(
                 onPressed: () => controller.submitSurvey(),
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.blue,
-                  padding: EdgeInsets.symmetric(horizontal: 40, vertical: 15),
+                  backgroundColor: Colors.blueAccent,
+                  padding: EdgeInsets.symmetric(horizontal: 40, vertical: 16),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(30),
                   ),
+                  elevation: 5,
                 ),
                 child: Text(
                   'SUBMIT',
-                  style: TextStyle(fontSize: 16),
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 ),
               ),
             ),

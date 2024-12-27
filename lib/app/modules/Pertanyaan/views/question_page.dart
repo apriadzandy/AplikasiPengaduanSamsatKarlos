@@ -3,8 +3,8 @@ import 'package:url_launcher/url_launcher.dart';
 
 class ContactInfoPage extends StatelessWidget {
   final String phone = "+6281234567890"; // Ganti dengan nomor WhatsApp yang valid
-  final String email = "johndoe@example.com";
-  final String address = "Jl. Contoh No. 123, Jakarta, Indonesia";
+  final String email = "samsatkarlos@gmail.com";
+  final String address = "Jl. Raya ngijo Karangploso, Krajan, Ngijo, Kec. Karangploso, Malang, Jawa Timur 65152";
 
   // Metode untuk menghubungi melalui WhatsApp
   void _launchWhatsApp() async {
