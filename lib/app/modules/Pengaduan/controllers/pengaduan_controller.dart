@@ -1,4 +1,3 @@
-// pengaduan_controller.dart
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
@@ -8,7 +7,7 @@ import 'dart:io';
 
 class PengaduanController extends GetxController {
   final formKey = GlobalKey<FormState>();
-  
+
   // Form Controllers
   final namaController = TextEditingController();
   final nomorTeleponController = TextEditingController();
@@ -50,7 +49,7 @@ class PengaduanController extends GetxController {
   // Pilih gambar dari galeri
   Future<void> pickImage(ImageSource source) async {
     final pickedFile = await ImagePicker().pickImage(source: source);
-    
+
     if (pickedFile != null) {
       selectedImage.value = File(pickedFile.path);
     }
@@ -59,6 +58,35 @@ class PengaduanController extends GetxController {
   // Hapus gambar yang dipilih
   void removeImage() {
     selectedImage.value = null;
+  }
+
+  // Fungsi untuk menampilkan dialog
+  void _showDialog({required String title, required String message, required Color color}) {
+    Get.defaultDialog(
+      title: title,
+      titleStyle: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: color),
+      content: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              message,
+              style: TextStyle(fontSize: 16),
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: () => Get.back(),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: color,
+              ),
+              child: const Text('OK'),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 
   // Submit pengaduan
@@ -71,7 +99,7 @@ class PengaduanController extends GetxController {
           final storageRef = FirebaseStorage.instance
               .ref()
               .child('pengaduan_images/${DateTime.now().millisecondsSinceEpoch}');
-          
+
           await storageRef.putFile(selectedImage.value!);
           imageUrl = await storageRef.getDownloadURL();
         }
@@ -87,13 +115,11 @@ class PengaduanController extends GetxController {
           'tanggal': FieldValue.serverTimestamp(),
         });
 
-        // Reset form setelah berhasil
-        Get.snackbar(
-          'Berhasil', 
-          'Pengaduan berhasil dikirim',
-          snackPosition: SnackPosition.BOTTOM,
-          backgroundColor: Colors.green,
-          colorText: Colors.white,
+        // Tampilkan dialog berhasil
+        _showDialog(
+          title: 'Berhasil',
+          message: 'Pengaduan berhasil dikirim',
+          color: Color.fromARGB(226, 0, 77, 153),
         );
 
         // Reset form
@@ -106,12 +132,11 @@ class PengaduanController extends GetxController {
         selectedImage.value = null;
 
       } catch (e) {
-        Get.snackbar(
-          'Error', 
-          'Gagal mengirim pengaduan: ${e.toString()}',
-          snackPosition: SnackPosition.BOTTOM,
-          backgroundColor: Colors.red,
-          colorText: Colors.white,
+        // Tampilkan dialog error
+        _showDialog(
+          title: 'Error',
+          message: 'Gagal mengirim pengaduan: ${e.toString()}',
+          color: Colors.red,
         );
       }
     }

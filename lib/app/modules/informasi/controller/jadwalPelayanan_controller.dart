@@ -1,4 +1,5 @@
 import 'package:aplikasipengaduansamsatkarlos/app/modules/informasi/models/jadwal_pelayanan_model.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -15,20 +16,30 @@ class JadwalPelayananController extends GetxController {
   // Fungsi untuk mengambil jadwal dari Firestore
   Future<void> fetchJadwal() async {
     try {
-      DocumentSnapshot snapshot = await FirebaseFirestore.instance.collection('jadwal').doc('pelayanan').get();
+      DocumentSnapshot snapshot =
+          await FirebaseFirestore.instance.collection('jadwal').doc('pelayanan').get();
 
       if (snapshot.exists) {
-        jadwal.value = JadwalPelayananModel.fromJson(snapshot.data() as Map<String, dynamic>);
+        jadwal.value =
+            JadwalPelayananModel.fromJson(snapshot.data() as Map<String, dynamic>);
       }
     } catch (e) {
-      Get.snackbar('Error', 'Gagal mengambil data jadwal', snackPosition: SnackPosition.BOTTOM);
+      // Menampilkan pop-up dialog saat terjadi error
+      _showDialog(
+        title: 'Error',
+        message: 'Gagal mengambil data jadwal',
+      );
     }
   }
 
   // Fungsi untuk update jadwal (untuk admin)
-  Future<void> updateJadwal(String senin, String selasa, String rabu, String kamis, String jumat, String sabtu) async {
+  Future<void> updateJadwal(String senin, String selasa, String rabu,
+      String kamis, String jumat, String sabtu) async {
     try {
-      await FirebaseFirestore.instance.collection('jadwal').doc('pelayanan').update({
+      await FirebaseFirestore.instance
+          .collection('jadwal')
+          .doc('pelayanan')
+          .update({
         'senin': senin,
         'selasa': selasa,
         'rabu': rabu,
@@ -47,9 +58,32 @@ class JadwalPelayananController extends GetxController {
         sabtu: sabtu,
       );
 
-      Get.snackbar('Sukses', 'Jadwal berhasil diupdate', snackPosition: SnackPosition.BOTTOM);
+      // Menampilkan pop-up dialog sukses
+      _showDialog(
+        title: 'Sukses',
+        message: 'Jadwal berhasil diupdate',
+      );
     } catch (e) {
-      Get.snackbar('Error', 'Gagal memperbarui jadwal', snackPosition: SnackPosition.BOTTOM);
+      // Menampilkan pop-up dialog saat terjadi error
+      _showDialog(
+        title: 'Error',
+        message: 'Gagal memperbarui jadwal',
+      );
     }
+  }
+
+  void _showDialog({required String title, required String message}) {
+    Get.defaultDialog(
+      title: title,
+      titleStyle: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+      middleText: message,
+      middleTextStyle: TextStyle(fontSize: 16, color: Colors.black54),
+      backgroundColor: Colors.white,
+      radius: 10,
+      textConfirm: 'OK',
+      confirmTextColor: Colors.white,
+      buttonColor: Color.fromARGB(226, 0, 77, 153),
+      onConfirm: () => Get.back(),
+    );
   }
 }

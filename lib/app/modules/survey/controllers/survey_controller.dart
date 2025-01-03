@@ -32,19 +32,23 @@ class SurveyController extends GetxController {
           .collection('surveys')
           .orderBy('timestamp', descending: true)
           .get();
-      
+
       // Ubah data dari Firestore ke dalam List<SurveyModel>
       surveyList.value = querySnapshot.docs.map((doc) {
         return SurveyModel.fromJson(doc.data());
       }).toList();
-      
     } catch (e) {
-      Get.snackbar(
-        'Error',
-        'Gagal mengambil data survei',
-        snackPosition: SnackPosition.BOTTOM,
+      // Ubah Snackbar menjadi Dialog
+      Get.defaultDialog(
+        title: 'Error',
+        middleText: 'Gagal mengambil data survei',
         backgroundColor: Colors.red,
-        colorText: Colors.white,
+        titleStyle: const TextStyle(color: Colors.white),
+        middleTextStyle: const TextStyle(color: Colors.white),
+        barrierDismissible: false,
+        textConfirm: 'OK',
+        confirmTextColor: Colors.white,
+        onConfirm: () => Get.back(),
       );
     }
   }
@@ -56,12 +60,16 @@ class SurveyController extends GetxController {
         informasi.value == 0 ||
         kenyamanan.value == 0 ||
         kepuasanTotal.value == 0) {
-      Get.snackbar(
-        'Peringatan',
-        'Mohon isi semua pertanyaan survey',
-        snackPosition: SnackPosition.BOTTOM,
+      Get.defaultDialog(
+        title: 'Peringatan',
+        middleText: 'Mohon isi semua pertanyaan survey',
         backgroundColor: Colors.orange,
-        colorText: Colors.white,
+        titleStyle: const TextStyle(color: Colors.white),
+        middleTextStyle: const TextStyle(color: Colors.white),
+        barrierDismissible: false,
+        textConfirm: 'OK',
+        confirmTextColor: Colors.white,
+        onConfirm: () => Get.back(),
       );
       return;
     }
@@ -69,12 +77,16 @@ class SurveyController extends GetxController {
     // Ambil uid dari Firebase Auth
     final User? user = FirebaseAuth.instance.currentUser;
     if (user == null) {
-      Get.snackbar(
-        'Error',
-        'Pengguna tidak ditemukan, silakan login terlebih dahulu',
-        snackPosition: SnackPosition.BOTTOM,
+      Get.defaultDialog(
+        title: 'Error',
+        middleText: 'Pengguna tidak ditemukan, silakan login terlebih dahulu',
         backgroundColor: Colors.red,
-        colorText: Colors.white,
+        titleStyle: const TextStyle(color: Colors.white),
+        middleTextStyle: const TextStyle(color: Colors.white),
+        barrierDismissible: false,
+        textConfirm: 'OK',
+        confirmTextColor: Colors.white,
+        onConfirm: () => Get.back(),
       );
       return;
     }
@@ -84,7 +96,10 @@ class SurveyController extends GetxController {
 
     // Jika nama pengguna tidak tersedia di FirebaseAuth, kita bisa mengambilnya dari Firestore
     try {
-      final userDoc = await FirebaseFirestore.instance.collection('users').doc(user.uid).get();
+      final userDoc = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(user.uid)
+          .get();
       if (userDoc.exists) {
         namaPengguna = userDoc.data()?['username'] ?? namaPengguna;
       }
@@ -101,7 +116,7 @@ class SurveyController extends GetxController {
         kepuasanTotal: kepuasanTotal.value,
         timestamp: DateTime.now(),
         saran: saran.value.isEmpty ? null : saran.value,
-        namaPengguna: namaPengguna,  // Menyimpan nama pengguna
+        namaPengguna: namaPengguna, // Menyimpan nama pengguna
       );
 
       await FirebaseFirestore.instance.collection('surveys').add(survey.toJson());
@@ -109,20 +124,28 @@ class SurveyController extends GetxController {
       // Reset survey setelah berhasil tersimpan
       resetSurvey();
 
-      Get.snackbar(
-        'Sukses',
-        'Terima kasih atas feedback Anda',
-        snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: Colors.green,
-        colorText: Colors.white,
+      Get.defaultDialog(
+        title: 'Sukses',
+        middleText: 'Terima kasih atas feedback Anda',
+        backgroundColor: const Color.fromARGB(255, 255, 255, 255),
+        titleStyle: const TextStyle(color: Colors.black),
+        middleTextStyle: const TextStyle(color: Colors.black),
+        barrierDismissible: false,
+        textConfirm: 'OK',
+        confirmTextColor: Colors.blueAccent,
+        onConfirm: () => Get.back(),
       );
     } catch (e) {
-      Get.snackbar(
-        'Error',
-        'Terjadi kesalahan saat menyimpan data',
-        snackPosition: SnackPosition.BOTTOM,
+      Get.defaultDialog(
+        title: 'Error',
+        middleText: 'Terjadi kesalahan saat menyimpan data',
         backgroundColor: Colors.red,
-        colorText: Colors.white,
+        titleStyle: const TextStyle(color: Colors.white),
+        middleTextStyle: const TextStyle(color: Colors.white),
+        barrierDismissible: false,
+        textConfirm: 'OK',
+        confirmTextColor: Colors.white,
+        onConfirm: () => Get.back(),
       );
     }
   }

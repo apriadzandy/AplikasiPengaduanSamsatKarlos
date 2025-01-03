@@ -18,7 +18,7 @@ class ProfileView extends StatelessWidget {
         title: Text(
           'My Profile',
           style: TextStyle(
-            color: Colors.grey[800],
+            color: const Color.fromARGB(255, 255, 255, 255),
             fontSize: 20,
             fontWeight: FontWeight.w600,
           ),
@@ -28,14 +28,14 @@ class ProfileView extends StatelessWidget {
         child: Column(
           children: [
             Container(
-              color: Colors.white,
+              color: const Color.fromARGB(0, 255, 255, 255),
               padding: EdgeInsets.symmetric(vertical: 30),
               child: Column(
                 children: [
                   Obx(() {
                     return CircleAvatar(
                       radius: 60,
-                      backgroundColor: Colors.grey[200],
+                      backgroundColor: const Color.fromARGB(236, 238, 238, 238),
                       backgroundImage: profileController.profileImageUrl.value.isNotEmpty
                           ? NetworkImage(profileController.profileImageUrl.value)
                           : AssetImage('assets/images/default_avatar.png') as ImageProvider,
